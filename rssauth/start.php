@@ -19,10 +19,7 @@
  * 
  */
 
-global $CONFIG;
-
 function rssauth_init() {
-	global $CONFIG;
 	
 	$rss = false;
 	if($_GET['view'] == "rss" || $_GET['view'] == "rssauth"){
@@ -37,7 +34,7 @@ function rssauth_init() {
 		}
 	}
 	
-	// if the server is using FastPCI instead of modPHP this will allow HTTP auth to still work
+	// if the server is using FastPCI instead of modPHP this will allow HTTP auth to still work... maybe
 	if(isset($_SERVER["AUTHORIZATION"]) && !empty($_SERVER["AUTHORIZATION"])){
     	list ($type, $cred) = split (" ", $_SERVER['AUTHORIZATION']);
 
@@ -65,5 +62,5 @@ function rssauth_init() {
 	}
 }
 
-register_elgg_event_handler('init','system','rssauth_init');
+elgg_register_event_handler('init','system','rssauth_init');
 ?>
