@@ -20,18 +20,20 @@
  */
 
 function rssauth_init() {
+  $view = get_input('view');
 	
-	$rss = false;
-	if($_GET['view'] == "rss" || $_GET['view'] == "rssauth"){
-		$rss = true;
-	}
-	
-	//remove this first "if" statement if you don't want $_GET as a viable method of authentication
-	if($rss = true && !empty($_GET['username']) && !empty($_GET['password'])){
-		$user = authenticate($_GET['username'], $_GET['password']);
-		if($user instanceof ElggUser){
-			login($user);
-		}
+	// use get variables if settings allow
+  $allow_get = elgg_get_plugin_setting('get_auth', 'rssauth');
+	if($view == 'rssauth' && !empty($_GET['username']) && !empty($_GET['password']) && $allow_get == 'yes'){
+    $username = get_input('username');
+    $password = get_input('password');
+
+    if(elgg_authenticate($username, $password) === true){
+      $user = get_user_by_username($username);
+      if($user){
+        login($user);
+      }
+    }
 	}
 	
 	// if the server is using FastPCI instead of modPHP this will allow HTTP auth to still work... maybe
@@ -47,20 +49,40 @@ function rssauth_init() {
 
 
 	//if forcing HTTP authentication headers send back the request for authentication
-	if($_GET['view'] == "rssauth" && empty($_SERVER['PHP_AUTH_USER'])){
-		header('WWW-Authenticate: Basic realm="ElggHTTPAuthRSS"');
-    	header('HTTP/1.0 401 Unauthorized');
-    	exit;
+	if($view == "rssauth" && empty($_SERVER['PHP_AUTH_USER'])){
+		rssauth_send_auth_headers();
 	}
 	
 	// authenticate by HTTP header credentials
-	if($rss = true && !empty($_SERVER['PHP_AUTH_USER'])){
-		$user = authenticate($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-		if($user instanceof ElggUser){
-			login($user);
-		}
+	if($view == 'rssauth' && !empty($_SERVER['PHP_AUTH_USER'])){
+    $failedauth = elgg_get_plugin_setting('authfail', 'rssauth');
+    // set inputs so we can filter them the same way as core
+    set_input('username', $_SERVER['PHP_AUTH_USER']);
+    set_input('password', $_SERVER['PHP_AUTH_PW']);
+    
+    $username = get_input('username');
+    $password = get_input('password');
+    
+    if(elgg_authenticate($username, $password) === true){
+      $user = get_user_by_username($username);
+      
+      if($user){
+        login($user);
+      }
+      elseif($failedauth == 'forceauth'){
+        rssauth_send_auth_headers();
+      }
+    }
+    elseif($failedauth == 'forceauth'){
+      rssauth_send_auth_headers();
+    }
 	}
 }
 
+function rssauth_send_auth_headers(){
+  header('WWW-Authenticate: Basic realm="ElggHTTPAuthRSS"');
+  header('HTTP/1.0 401 Unauthorized');
+  exit;
+}
+
 elgg_register_event_handler('init','system','rssauth_init');
-?>

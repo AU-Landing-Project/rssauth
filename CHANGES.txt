@@ -1,0 +1,9 @@
+== Version History ==
+
+x.x:
+
+1.2 (06/20/2012):
+
+ - updated for changes to password handling in 1.8.5
+ - added plugin settings for $_GET variable auth and whether to force authentication
+ - forces elgg 1.8.5 in manifest
