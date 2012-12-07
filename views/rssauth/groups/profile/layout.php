@@ -9,15 +9,10 @@
 
 $entities = elgg_get_config('registered_entities');
 
-if ($entities['object'] && count($entities['object'])) {
-	$subtypes = array();
-	foreach ($entities['object'] as $subtype) {
-		$subtypes[] = $subtype;
-	}
-	
+if (!empty($entities['object'])) {
 	echo elgg_list_entities(array(
 		'type' => 'object',
-		'subtypes' => $subtypes,
+		'subtypes' => $entities['object'],
 		'container_guid' => $vars['entity']->getGUID(),
 	));
 }
