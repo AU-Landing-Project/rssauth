@@ -3,8 +3,8 @@
 x.x:
 
 1.3 ():
-
- - adds missing group profile rss view
+ - adds in rss views for core plugins
+ - adds in rss views for popular community plugins (event_calendar, tidypics)
 
 1.2 (06/20/2012):
 
