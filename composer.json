@@ -11,7 +11,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/AU-Landing-Project/rssauth`/issues"
+        "issues": "https://github.com/AU-Landing-Project/rssauth/issues"
     },
     "require": {
         "php": ">=5.4",
