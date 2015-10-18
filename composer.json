@@ -1,0 +1,20 @@
+{
+    "name": "au/rssauth",
+    "type": "elgg-plugin",
+    "description": "Provides a number of methods of getting rss feeds of non-public content as a logged in user",
+    "homepage": "https://github.com/AU-Landing-Project/rssauth",
+    "keywords": ["elgg", "plugin", "rssauth", "AU"],
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Matt Beckett"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/AU-Landing-Project/rssauth/issues"
+    },
+    "require": {
+        "php": ">=5.4",
+        "composer/installers": ">=1.0.8"
+    }
+}

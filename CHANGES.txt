@@ -2,6 +2,10 @@
 
 x.x:
 
+2.0.0 (10/18/2015):
+ - upgrade for Elgg 1.9+
+ - add token method of authentication
+
 1.3 ():
  - adds in rss views for core plugins
  - adds in rss views for popular community plugins (event_calendar, tidypics)
